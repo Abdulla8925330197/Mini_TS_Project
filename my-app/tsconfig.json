@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",                         // Supports modern JS features
+    "module": "CommonJS",                       // Node.js compatibility
+    "rootDir": ".",                             // Your source files are at project root
+    "outDir": "./dist",                         // Compiled JS output directory
+    "esModuleInterop": true,                    // Enables default import support
+    "moduleResolution": "node",                 // Use Node.js-style module resolution
+    "resolveJsonModule": true,                  // Allow importing JSON files
+    "allowJs": false,                           // Disable mixing JS + TS (recommended)
+    "strict": true,                             // Enable all strict checks
+    "skipLibCheck": true,                       // Skip .d.ts checks to speed up builds
+    "forceConsistentCasingInFileNames": true    // Prevent issues on case-sensitive OS
+  },
+  "include": [
+    "app.ts",
+    "bin/**/*",
+    "config/**/*",
+    "controllers/**/*",
+    "models/**/*",
+    "routes/**/*",
+    "types/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}
