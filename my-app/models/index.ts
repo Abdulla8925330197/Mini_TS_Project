@@ -15,7 +15,7 @@ const sequelize = new Sequelize(dbConfig.database!, dbConfig.username!, dbConfig
 const Employees = EmployeeModelFactory(sequelize, DataTypes);
 const Attendance = AttendanceModelFactory(sequelize, DataTypes);
 
-// Set up associations here
+
 Employees.hasMany(Attendance, { foreignKey: 'employee_id', as: 'attendances' });
 Attendance.belongsTo(Employees, { foreignKey: 'employee_id', as: 'employee' });
 

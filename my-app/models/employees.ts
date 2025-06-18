@@ -40,7 +40,7 @@ export default (sequelize: Sequelize, dataTypes: typeof SequelizeDataTypes) => {
       },
       email: {
         type: dataTypes.STRING,
-        allowNull: false, // ❗ to match migration
+        allowNull: false, 
         unique: true,
       },
       createdAt:{

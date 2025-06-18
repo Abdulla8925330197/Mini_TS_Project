@@ -1,17 +1,11 @@
 import { Request, Response } from 'express';
-import { Employees } from '../models';
-import {User,data} from './emp.dto'
-
-
+import * as employeeService from '../services/employee.service';
+import { data } from '../dto/employee.dto';
 
 export const createEmployee = async (req: Request, res: Response) => {
   try {
-    const body:data = req.body;
- 
-    const newEmployee:User= await Employees.create({
-   name:body.name,
-   email:body.email
-    });
+    const body: data = req.body;
+    const newEmployee = await employeeService.createEmployee(body);
     res.status(201).json(newEmployee);
   } catch (error) {
     console.error(error);
@@ -21,7 +15,7 @@ export const createEmployee = async (req: Request, res: Response) => {
 
 export const getEmployees = async (req: Request, res: Response) => {
   try {
-    const employees:User[] = await Employees.findAll();
+    const employees = await employeeService.getAllEmployees();
     res.status(200).json(employees);
   } catch (error) {
     console.error(error);
@@ -30,9 +24,9 @@ export const getEmployees = async (req: Request, res: Response) => {
 };
 
 export const getEmployeeById = async (req: Request, res: Response): Promise<void> => {
-  const { id } = req.params;
   try {
-    const employee:User | null = await Employees.findByPk(id);
+    const id = parseInt(req.params.id);
+    const employee = await employeeService.getEmployeeById(id);
     if (!employee) {
       res.status(404).json({ message: 'Employee not found' });
       return;
@@ -45,17 +39,14 @@ export const getEmployeeById = async (req: Request, res: Response): Promise<void
 };
 
 export const updateEmployee = async (req: Request, res: Response): Promise<void> => {
-  const  id:number  = parseInt(req.params.id) ;
-  const  data:User  = req.body;
   try {
-    const employee:User|null = await Employees.findByPk(id);
+    const id = parseInt(req.params.id);
+    const body: data = req.body;
+    const employee = await employeeService.updateEmployee(id, body);
     if (!employee) {
       res.status(404).json({ message: 'Employee not found' });
       return;
     }
-    employee.name = data.name || employee.name;
-    employee.email = data.email || employee.email;
-    await employee.save();
     res.status(200).json(employee);
   } catch (error) {
     console.error(error);
@@ -64,14 +55,13 @@ export const updateEmployee = async (req: Request, res: Response): Promise<void>
 };
 
 export const deleteEmployee = async (req: Request, res: Response): Promise<void> => {
-  const id:number =parseInt( req.params.id);
   try {
-    const employee:User |null = await Employees.findByPk(id);
-    if (!employee) {
+    const id = parseInt(req.params.id);
+    const deleted = await employeeService.deleteEmployee(id);
+    if (!deleted) {
       res.status(404).json({ message: 'Employee not found' });
       return;
     }
-    await employee.destroy();
     res.status(200).json({ message: 'Employee deleted successfully' });
   } catch (error) {
     console.error(error);

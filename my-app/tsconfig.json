@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
     "target": "ES2020",                         // Supports modern JS features
-    "module": "CommonJS",                       // Node.js compatibility
-    "rootDir": ".",                             // Your source files are at project root
+    "module": "esnext",                       // Node.js compatibility
+    "rootDir": ".", 
+    "types": ["node","jest"],                            // Your source files are at project root
     "outDir": "./dist",                         // Compiled JS output directory
     "esModuleInterop": true,                    // Enables default import support
     "moduleResolution": "node",                 // Use Node.js-style module resolution
@@ -10,7 +11,8 @@
     "allowJs": false,                           // Disable mixing JS + TS (recommended)
     "strict": true,                             // Enable all strict checks
     "skipLibCheck": true,                       // Skip .d.ts checks to speed up builds
-    "forceConsistentCasingInFileNames": true    // Prevent issues on case-sensitive OS
+    "forceConsistentCasingInFileNames": true,
+    //"module":"esnext"    // Prevent issues on case-sensitive OS
   },
   "include": [
     "app.ts",
@@ -19,7 +21,10 @@
     "controllers/**/*",
     "models/**/*",
     "routes/**/*",
-    "types/**/*"
+    "types/**/*",
+    "tests",
+    "src",
+    "**/*.test.ts"
   ],
   "exclude": [
     "node_modules",

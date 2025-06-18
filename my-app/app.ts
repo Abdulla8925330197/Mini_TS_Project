@@ -1,31 +1,31 @@
-import createError from 'http-errors';
-import express, { Request, Response, NextFunction } from 'express';
+import express from 'express';
 import path from 'path';
-import cookieParser from 'cookie-parser';
 import logger from 'morgan';
+import fs from 'fs';
+import yaml from 'yaml';
+import swaggerUi from 'swagger-ui-express';
+//import startAllCronJobs from './cron/index'
 
-import indexRouter from './routes/index';
-//import attendanceRoutes from './routes/attendances'; // Uncommented and added attendance routes
+// import employeeRouter from './routes/attendances';
+// import attendanceRouter from './routes/employee';
+import index from './routes/index'
+import router from './routes/attendances';
 
 const app = express();
+
+// Swagger setup
+const swaggerFile = fs.readFileSync(path.join(__dirname, './swagger/swagger.yaml'), 'utf8');
+const swaggerDocument = yaml.parse(swaggerFile);
+app.use('/yaml', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+// Middleware
+app.use(logger('dev'));
 app.use(express.json());
-// app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(express.urlencoded({ extended: false }));
 
-// Routes setup
-app.use('/', indexRouter); // Index routes
-//app.use('/api/attendance', attendanceRoutes); // Corrected path for attendance routes
-
-// 404 handler (for unknown routes)
-app.use((req: Request, res: Response, next: NextFunction) => {
-  next(createError(404));
-});
-
-// Error handler (for errors in general)
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-  res.status(err.status || 500).json({err});
-});
+// Routes
+app.use('/api',index)
+// app.use('/employee', router);
+// app.use('/attendance', attendanceRouter);
 
 export default app;
